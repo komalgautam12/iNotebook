@@ -68,7 +68,7 @@ router.put("/updateNotes/:id", tokenCheck, async (req, res) => {
     if (note.user.toString() !== req.user.id) {
       res.status(401).send("not allowed");
     }
-    const updatedata = await Note.findByIdAndUpdate(req.params.id, newNote);
+    const updatedata = await Note.findByIdAndUpdate(req.params.id, newNote,{new:true});
     res.json(updatedata);
   } catch (error) {
     res.send(error);

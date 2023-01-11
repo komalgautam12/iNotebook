@@ -4,7 +4,7 @@ import Noteitem from "./Noteitem";
 import Addnote from "./Addnote";
 import NoteContext from "../context/notes/noteContext";
 export default function Note() {
-  const { notes, getNotes } = useContext(NoteContext);
+  const { notes, getNotes,editNote } = useContext(NoteContext);
   useEffect(() => {
     getNotes();
     // eslint-disable-next-line
@@ -14,14 +14,15 @@ export default function Note() {
     etitle: "",
     edescription: "",
     etags: "default",
+    id:""
   });
 
   //modal opening logic
   const ref = useRef(null);
   const updateNotes = (cureentNote) => {
-    const { title, description, tags } = cureentNote;
+    const { title, description, tags ,_id} = cureentNote;
     ref.current.click();
-    setnote({ etitle: title, etags: tags, edescription: description });
+    setnote({ etitle: title, etags: tags, edescription: description ,id:_id});
     
   };
 
@@ -34,6 +35,7 @@ export default function Note() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(note)
+    editNote(note.id,note)
   };
 
   return (
