@@ -2,12 +2,25 @@ import { useState } from "react";
 import NoteContext from "./noteContext";
 
 const NoteState = (props) => {
+
+  const [alert, setAlert] = useState(null);
+  let showalert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type,
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 3000);
+  };
+
   const allNote = [];
   //Notes State
   const [notes, setnotes] = useState(allNote);
   const host = "http://localhost:5000/api/notes";
+
   const jwt =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmFkYmY4MTExNjM5OWQyMDM2ZWY3YSIsImlhdCI6MTY3MzM3MTM0NSwiZXhwIjoxNjczNDU3NzQ1fQ.cSPI5pT_8OVbT4C4RWsppyzmGLSMvGoKX-QieAdipoY";
+    localStorage.getItem("jwt");
   //getting all notes
 
   const getNotes = async () => {
@@ -91,7 +104,7 @@ const NoteState = (props) => {
 
   return (
     <NoteContext.Provider
-      value={{ notes, addNote, editNote, getNotes, deleteNote }}
+      value={{ notes, addNote, editNote, getNotes, deleteNote ,alert,showalert}}
     >
       {props.children}
     </NoteContext.Provider>

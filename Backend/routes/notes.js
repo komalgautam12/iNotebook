@@ -5,6 +5,7 @@ const app = express();
 const { body, validationResult } = require("express-validator");
 const router = express.Router();
 const Note = require("../models/notes");
+ 
 
 // route 1: get request for getting notes
 router.get("/getAllNotes", tokenCheck, async (req, res) => {

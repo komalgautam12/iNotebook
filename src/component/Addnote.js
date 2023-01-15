@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import NoteContext from "../context/notes/noteContext";
 export default function Addnote() {
-  const { addNote } = useContext(NoteContext);
+  const { addNote,showalert } = useContext(NoteContext);
+ 
   const [note, setnote] = useState({
     title: "",
     description: "",
@@ -13,12 +14,14 @@ export default function Addnote() {
   const handleSubmit = (e) => {
     e.preventDefault();
     addNote(note);
+    showalert("note added Sucessfully" ,"Success")
+    setnote({title:"",description:"",tags:""})
   };
 
   return (
     <div>
       <h1>Add a note</h1>
-      <div>
+      <form  onSubmit={handleSubmit}>
         <div className="mb-3 my-4">
           <label htmlFor="exampleFormControlInput1" className="form-label">
             Title
@@ -30,6 +33,8 @@ export default function Addnote() {
             name="title"
             placeholder="future Goal"
             onChange={change}
+            value={note.title}
+            min="5"
           />
         </div>
         <div className="mb-3 ">
@@ -43,6 +48,8 @@ export default function Addnote() {
             name="tags"
             placeholder="IMPORTANT!"
             onChange={change}
+            value={note.tags}
+            minLength="5"
           />
         </div>
         <div className="mb-3">
@@ -55,19 +62,23 @@ export default function Addnote() {
             name="description"
             rows="3"
             onChange={change}
+            value={note.description}
+            min="5"
           ></textarea>
         </div>
         <div className="mb-3">
           <button
-            type="button"
+            type="submit"
             className="btn btn-primary"
-            onClick={handleSubmit}
+           
+            // disabled={note.title.length<5||note.description.length<5}
           >
             Submit
           </button>
         </div>
-      </div>
+      </form>
       <h1 className="my-4">View your notes</h1>
+      
     </div>
   );
 }

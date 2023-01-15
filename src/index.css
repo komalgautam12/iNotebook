@@ -14,3 +14,16 @@ code {
 .noteItemTag{
   font-size: 1rem;
 }
+.loginMain{
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.loginCard{
+  width:auto;
+  padding: 1rem;
+  margin: 1rem;
+ 
+}

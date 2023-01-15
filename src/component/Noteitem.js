@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import NoteContext from "../context/notes/noteContext";
 export default function Noteitem(props) {
-  const { deleteNote } = useContext(NoteContext);
+  const { deleteNote,showalert } = useContext(NoteContext);
   let { note, updateNotes } = props;
   //deleting a note
   const handleDelete = () => {
     deleteNote(note._id);
+    showalert("note deleted Sucessfully" ,"Success")
   };
 
   //editing a note

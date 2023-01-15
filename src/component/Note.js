@@ -1,12 +1,18 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Noteitem from "./Noteitem";
-
 import Addnote from "./Addnote";
+import { useNavigate } from "react-router-dom";
 import NoteContext from "../context/notes/noteContext";
 export default function Note() {
-  const { notes, getNotes,editNote } = useContext(NoteContext);
+  const { notes, getNotes, editNote,showalert  } = useContext(NoteContext);
+  const navigate = useNavigate();
   useEffect(() => {
-    getNotes();
+    if(!localStorage.getItem("jwt")){
+      navigate("/login") 
+    }
+    
+    
+      getNotes();
     // eslint-disable-next-line
   }, []);
 
@@ -14,28 +20,28 @@ export default function Note() {
     etitle: "",
     edescription: "",
     etags: "default",
-    id:""
+    id: "",
   });
-
   //modal opening logic
   const ref = useRef(null);
+  const refclose = useRef(null);
   const updateNotes = (cureentNote) => {
-    const { title, description, tags ,_id} = cureentNote;
+    const { title, description, tags, _id } = cureentNote;
     ref.current.click();
-    setnote({ etitle: title, etags: tags, edescription: description ,id:_id});
-    
+    setnote({ etitle: title, etags: tags, edescription: description, id: _id });
   };
 
   //update note
 
   const change = (e) => {
     setnote({ ...note, [e.target.name]: e.target.value });
-   
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(note)
     editNote(note.id,note)
+    showalert("note updated Sucessfully" ,"Success")
+    refclose.current.click()
+    
   };
 
   return (
@@ -48,6 +54,7 @@ export default function Note() {
           className="d-none btn btn-primary"
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
+          
         >
           Launch demo modal
         </button>
@@ -57,6 +64,7 @@ export default function Note() {
           tabIndex="-1"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
+         
         >
           <div className="modal-dialog">
             <div className="modal-content">
@@ -125,6 +133,7 @@ export default function Note() {
               </div>
               <div className="modal-footer">
                 <button
+                ref={refclose}
                   type="button"
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
@@ -135,6 +144,7 @@ export default function Note() {
                   type="button"
                   className="btn btn-primary"
                   onClick={handleSubmit}
+                  disabled={note.etitle.length<5||note.edescription.length<5}
                 >
                   Save changes
                 </button>
@@ -143,8 +153,10 @@ export default function Note() {
           </div>
         </div>
       </div>
-
       <Addnote />
+      <div className="container">
+        <h2> {notes.length === 0 && "No notes to display"}</h2>
+      </div>
       <div className="row my-4">
         {notes.map((element) => {
           return (
